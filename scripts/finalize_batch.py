@@ -16,7 +16,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from neighborhood_hero_pipeline import IMAGES_DIR, finalize_cmd, load_manifest  # noqa: E402
+from neighborhood_hero_pipeline import (  # noqa: E402
+    BACKFILL_DIR, IMAGES_DIR, finalize_cmd, load_manifest,
+)
 
 
 def main() -> None:
@@ -32,13 +34,15 @@ def main() -> None:
             print(f"SKIP (not in manifest): {f.name}")
             skipped += 1
             continue
-        out = IMAGES_DIR / f"{slug}.png"
+        out_dir = (BACKFILL_DIR if manifest[slug]["stage"] == "3"
+                   else IMAGES_DIR)
+        out = out_dir / f"{slug}.png"
         if out.exists():
             skipped += 1
             continue
         tmp = Path("/tmp") / f.name
         shutil.copy(f, tmp)
-        finalize_cmd(slug, tmp)
+        finalize_cmd(slug, tmp, out_dir)
         n += 1
     print(f"finalized {n}, skipped {skipped}")
 
