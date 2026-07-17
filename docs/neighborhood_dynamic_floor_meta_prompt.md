@@ -53,12 +53,15 @@ The full classification lives in `analysis/dynamic_floor_neighborhoods/`:
 
 Staging (from `data/neighborhoods_manifest.csv`):
 
-- **Stage 1**: all USA (50 states + DC) and Canada neighborhoods.
-- **Stage 2**: the rest of the priority CSV. The last PR that completes
-  stage 1 must state that the priority list is done and stage 2 begins.
+- **Stage 1**: USA (50 states + DC) and Canada revisions from the priority
+  CSV — 211 neighborhoods (`mid`/`high` only; `second` keeps its image).
+- **Stage 2**: the rest of the priority CSV revisions — 446 neighborhoods.
+  The last PR that completes stage 1 must state that the priority list is
+  done and stage 2 begins.
 - **Stage 3**: the 46k sheet — neighborhoods **only** (no cities, states,
-  countries), classified with the same rules; only `mid`/`high` tiers are
-  regenerated.
+  countries) that are **not** already in the priority CSV. These were
+  never generated, so **all tiers** are included (18,876 neighborhoods:
+  17,664 fresh `second`-floor generations plus 853 `high` and 359 `mid`).
 
 Operational rules for the batch run:
 
@@ -71,7 +74,9 @@ Operational rules for the batch run:
 
 You are an expert prompt engineer for text-to-image models. You will be
 given a list of travel destinations, each a specific neighborhood within a
-city, together with a floor tier (`mid` or `high`). For each neighborhood,
+city, together with a floor tier (`second`, `mid`, or `high` — `second`
+appears only for stage-3 neighborhoods that were never generated). For
+each neighborhood,
 generate one photorealistic image-generation prompt for the interior of a
 typical vacation rental there, viewed from inside looking out through a
 window to a characteristic outdoor view of that neighborhood. These prompts
@@ -88,6 +93,8 @@ run across multiple image models.
 
 - The room is **never on the ground floor** and no longer defaults to the
   second floor. Use the supplied tier:
+  - `second` (stage-3 fresh generations only) — a second-floor room with a
+    gently elevated outlook, exactly like the original meta-prompt.
   - `mid` — state an explicit third-to-sixth floor (vary across the list),
     e.g. "fifth-floor converted loft living room". The view looks slightly
     over and along the street and rooftops below, never an aerial view.
@@ -141,11 +148,23 @@ run across multiple image models.
   name.
 - Interior materials, furniture, palette, and decor authentic to the
   neighborhood's typical housing stock.
-- The view captures the everyday atmosphere of the neighborhood, not a
-  famous sight. Never center or feature a named landmark. Describe typical
-  generic elements any rental there could plausibly see: rooftop
-  materials, facade styles and colours, street trees, courtyards, the
-  quality of light, the season.
+- The view shows what a guest in an **upscale stay** in that neighborhood
+  would realistically see: characteristic of the neighborhood and clearly
+  of that place, **neither too grand nor too nondescript**. On the Las
+  Vegas Strip that means the resort towers lining the boulevard, not a
+  parking lot; in SoHo the cast-iron facades opposite, not an anonymous
+  wall. Never make the main subject a parking lot, service rooftops,
+  blank walls, or back-of-house fabric.
+- Never center or feature a named landmark filling the view like a
+  poster, and do not invent dramatic vistas most rentals there would not
+  have. Describe the buildings, materials, greenery, and light that
+  define the neighborhood's character.
+- Signature neighborhoods carry a curated view hint (see `VIEW_HINTS` in
+  `scripts/neighborhood_hero_pipeline.py`): a one-line description of the
+  characteristic view an upscale rental there genuinely has (e.g. the
+  Strip corridor's resort towers, Coal Harbour's water-and-mountains).
+  Extend this dict when a generic view under-delivers for a well-known
+  neighborhood.
 - Add a short negative hint where the model is likely to insert the city's
   icon unprompted (e.g. "No Eiffel Tower in view" for Paris; "no casino
   logos or readable signage" for Las Vegas).
