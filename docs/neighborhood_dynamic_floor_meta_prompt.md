@@ -194,7 +194,9 @@ python3 scripts/neighborhood_hero_pipeline.py classify
 python3 scripts/neighborhood_hero_pipeline.py manifest \
     --secondary-csv data/secondary_locations_46k.csv
 
-# 3. Emit the prompts CSV (optionally one stage at a time)
+# 3. Emit the prompts CSV (one stage at a time; the committed CSV holds
+#    stages 1-2 only — regenerate stage 3 locally at batch time, since all
+#    18,876 stage-3 prompts together exceed GitHub's file-size limits)
 python3 scripts/neighborhood_hero_pipeline.py prompts-csv --stage 1
 
 # 4. Inspect one prompt
