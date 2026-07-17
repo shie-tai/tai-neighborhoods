@@ -14,9 +14,12 @@ differences from the city pipeline:
    where the neighborhood's typical accommodation is a high-rise
    (Financial District Manhattan, the Las Vegas Strip, Hong Kong).
 
-Only neighborhoods classified "mid" or "high" are regenerated; every
-"second" neighborhood already has a correct second-floor image from the
-previous batch and is excluded from the manifest.
+For the priority CSV (already generated as second-floor images), only
+neighborhoods classified "mid" or "high" are regenerated; every "second"
+neighborhood keeps its existing image. The 46k-sheet neighborhoods that
+are NOT in the priority CSV were never generated, so all of them enter
+stage 3 with their classified tier (including fresh second-floor
+generations).
 
 Images are written as slug-named 16:9 PNG files under
 images/neighborhoods_dynamic/<display_slug>.png, preserving the internal
@@ -25,9 +28,10 @@ naming convention exactly (country/region/city/neighborhood).
 Subcommands:
   classify      Write analysis/dynamic_floor_neighborhoods/ from the
                 internal-match CSV.
-  manifest      Build data/neighborhoods_manifest.csv (staged, mid/high
-                only): stage 1 = USA + Canada, stage 2 = rest of the
-                priority CSV, stage 3 = 46k-sheet neighborhoods.
+  manifest      Build data/neighborhoods_manifest.csv (staged):
+                stage 1 = USA + Canada revisions, stage 2 = rest of the
+                priority CSV revisions, stage 3 = all 46k-sheet
+                neighborhoods not in the priority CSV.
   prompt        Print the generated prompt for one slug.
   prompts-csv   Emit data/prompt/neighborhood_prompts.csv
                 (destination,prompt) for a stage (or all stages).
@@ -126,6 +130,36 @@ class InteriorStyle:
     floor_cue: bool
 
 
+SECOND_STYLES: list[InteriorStyle] = [
+    InteriorStyle(
+        "apartment", "living room",
+        "a wide window with painted timber trim",
+        "a comfortable fabric sofa and an armchair around a low wooden "
+        "coffee table with a mug and an open book, a soft wool rug, a floor "
+        "lamp, a leafy potted plant, a small shelf of books and ceramics",
+        "calm plaster walls fall toward the left and right edges as calm "
+        "space",
+        True),
+    InteriorStyle(
+        "townhouse", "sitting room",
+        "a generous sash window above a cushioned window seat",
+        "a linen loveseat and a woven armchair flanking a small side table "
+        "with a carafe of water, a stack of magazines on an ottoman, a "
+        "cotton rug, framed prints leaning on a picture ledge",
+        "soft warm-white walls fall toward the left and right edges as calm "
+        "space",
+        True),
+    InteriorStyle(
+        "apartment", "dining room",
+        "tall shuttered windows folded open",
+        "a wooden dining table with four chairs, a bowl of fruit and a "
+        "small vase of flowers on the table, a sideboard with glassware, a "
+        "pendant light, a patterned runner on warm wooden floors",
+        "quiet neutral walls fall toward the left and right edges as calm "
+        "space",
+        True),
+]
+
 MID_STYLES: list[InteriorStyle] = [
     InteriorStyle(
         "converted loft apartment", "living room",
@@ -198,6 +232,11 @@ HIGH_STYLES: list[InteriorStyle] = [
 ]
 
 VANTAGE_TEXT: dict[str, str] = {
+    "second": (
+        "The room sits on the second floor of the building, giving a gently "
+        "elevated outlook over the scene below, never at ground level and "
+        "never an aerial view."
+    ),
     "mid": (
         "The room sits on the {floor_word} floor of the building, looking "
         "slightly over and along the street and rooftops below, never at "
@@ -206,8 +245,7 @@ VANTAGE_TEXT: dict[str, str] = {
     "high": (
         "The room sits on a high upper floor of the tower, roughly the "
         "{floor_word} storey, and the view reads as a genuine high-floor "
-        "outlook over the neighborhood's rooftops and towers below, never "
-        "at street level."
+        "outlook over the neighborhood below, never at street level."
     ),
 }
 
@@ -259,24 +297,80 @@ NEGATIVE_HINTS: dict[str, str] = {
 }
 
 
-def _view_description(tier: str, destination: str) -> str:
+# Curated view hints for signature neighborhoods where the generic
+# description would produce a view that is either too nondescript (an
+# upscale Strip rental looking at a parking lot) or risks the wrong city
+# fabric. The hint describes what an upscale stay there would genuinely
+# see, keyed on exact display slug.
+VIEW_HINTS: dict[str, str] = {
+    "usa/nevada/las-vegas/las-vegas-strip": (
+        "the Las Vegas Strip corridor itself: the massive resort hotel "
+        "towers of the Strip lining the boulevard at believable distance "
+        "in varied glass and cream tones, porte-cocheres and pool decks "
+        "between them far below, the desert and distant mountains on the "
+        "horizon"
+    ),
+    "usa/new-york/new-york/midtown": (
+        "the dense Midtown Manhattan high-rise fabric: office and "
+        "residential towers in glass, limestone, and brick at close "
+        "believable spacing, setback terraces and rooftop water towers "
+        "below"
+    ),
+    "usa/new-york/new-york/financial-district": (
+        "the dense Financial District fabric: stone and glass office "
+        "towers and converted residential high-rises at close spacing, "
+        "narrow street canyons below, a glimpse of the harbor between "
+        "buildings"
+    ),
+    "usa/florida/miami/brickell": (
+        "Brickell's glass residential towers with balconies, a slice of "
+        "Biscayne Bay's turquoise water between them, palms lining the "
+        "avenue far below"
+    ),
+    "usa/hawaii/honolulu/waikiki": (
+        "Waikiki's white resort towers stepping toward the ocean, with a "
+        "band of turquoise water and surf visible between buildings"
+    ),
+    "canada/british-columbia/vancouver/coal-harbour": (
+        "Coal Harbour's glass towers against the water, the seawall and "
+        "marina below, and forested mountain slopes across the inlet"
+    ),
+    "usa/illinois/chicago/streeterville": (
+        "Streeterville's high-rise fabric with a slice of Lake Michigan's "
+        "blue water visible between towers"
+    ),
+    "usa/washington/seattle/belltown": (
+        "Belltown's mixed towers stepping toward Elliott Bay, a band of "
+        "grey-blue water and ferries visible between buildings"
+    ),
+}
+
+
+def _view_description(tier: str, destination: str, slug: str = "") -> str:
     hood = destination.split(",")[0]
+    hint = VIEW_HINTS.get(slug)
+    if hint:
+        return (
+            f"{hint}, exactly what an upscale rental on this floor in "
+            f"{hood} would genuinely see"
+        )
     if tier == "high":
         return (
-            f"the everyday elevated cityscape of {hood}: the tops and upper "
-            f"floors of neighbouring residential and office towers at "
-            f"believable distance, lower rooftops with vents and terraces "
-            f"far below, streets reading only as thin lines between "
-            f"buildings, and open sky above, exactly what a rental on this "
-            f"floor in this neighborhood would genuinely see"
+            f"the characteristic elevated cityscape of {hood}: the "
+            f"neighborhood's signature towers and skyline fabric at "
+            f"believable distance filling the view attractively, the "
+            f"buildings that define this district's character rather than "
+            f"service rooftops or parking lots, streets reading as thin "
+            f"lines far below, and open sky above, exactly what an upscale "
+            f"rental on this floor in this neighborhood would genuinely see"
         )
     return (
-        f"the everyday streetscape of {hood} from a gently elevated vantage: "
-        f"the facades and rooflines of the buildings across the street at "
-        f"realistic close scale, street trees and awnings just below, the "
-        f"street running sideways beneath the window and out of frame, "
-        f"exactly what a rental on this floor in this neighborhood would "
-        f"genuinely see"
+        f"the characteristic streetscape of {hood} from a gently elevated "
+        f"vantage: the facades and rooflines of the neighborhood's typical "
+        f"buildings across the street at realistic close scale, street "
+        f"trees and awnings just below, the street running sideways "
+        f"beneath the window and out of frame, exactly what an upscale "
+        f"rental on this floor in this neighborhood would genuinely see"
     )
 
 
@@ -288,8 +382,15 @@ def _negative_hint(slug: str) -> str:
     return ""
 
 
+STYLE_POOLS: dict[str, list[InteriorStyle]] = {
+    "second": SECOND_STYLES,
+    "mid": MID_STYLES,
+    "high": HIGH_STYLES,
+}
+
+
 def pick_style(slug: str, tier: str) -> InteriorStyle:
-    pool = HIGH_STYLES if tier == "high" else MID_STYLES
+    pool = STYLE_POOLS[tier]
     digest = hashlib.sha256(slug.encode("utf-8")).digest()
     return pool[digest[0] % len(pool)]
 
@@ -306,12 +407,17 @@ def build_prompt(slug: str, destination: str, tier: str) -> str:
     vantage = VANTAGE_TEXT[tier].format(floor_word=floor_word)
     width_note = "" if tier == "high" else MID_WIDTH_NOTE
     floor_cue = ", floor visible in the lower third" if style.floor_cue else ""
-    view = _view_description(tier, destination)
+    view = _view_description(tier, destination, slug)
     negative = _negative_hint(slug)
     if tier == "high":
         accommodation_phrase = (
             f"{style.accommodation} vacation rental {style.room} on a high "
             f"floor (around the {floor_word} storey)"
+        )
+    elif tier == "second":
+        accommodation_phrase = (
+            f"second-floor {style.accommodation} vacation rental "
+            f"{style.room}"
         )
     else:
         accommodation_phrase = (
@@ -319,15 +425,17 @@ def build_prompt(slug: str, destination: str, tier: str) -> str:
             f"{style.room}"
         )
     plausibility = (
-        f"The view captures the everyday atmosphere and character of the "
-        f"neighborhood, not a famous sight: describe only typical, generic "
-        f"elements any rental in {destination} could plausibly see, such as "
-        f"local rooftop materials, facade styles and colours, street trees "
-        f"and greenery, and the local quality of light, in the "
-        f"neighborhood's most representative season. Never center or "
-        f"feature a named landmark; a quiet, authentic view is better than "
-        f"an impressive but implausible one.{negative} Render the view in "
-        f"soft, appealing daylight typical of the destination (clear "
+        f"The view shows what a guest in an upscale stay in {destination} "
+        f"would realistically see: characteristic of the neighborhood and "
+        f"clearly of this place, neither too grand nor too nondescript. "
+        f"Show the buildings, materials, greenery, and light that define "
+        f"the neighborhood's character; never make the main subject a "
+        f"parking lot, service rooftops, blank walls, or anonymous "
+        f"back-of-house fabric. Never center or feature a named landmark "
+        f"filling the view like a poster, and do not invent dramatic "
+        f"vistas most rentals there would not have.{negative} Use the "
+        f"neighborhood's most representative season, and render the view "
+        f"in soft, appealing daylight typical of the destination (clear "
         f"morning or golden late afternoon), with the interior lit "
         f"consistently by the same natural light."
     )
@@ -429,10 +537,15 @@ def classify_cmd() -> None:
 
 def manifest_cmd(secondary_csv: Path | None) -> None:
     dyn_path = ANALYSIS_DIR / "dynamic_floor_neighborhoods.csv"
-    if not dyn_path.exists():
+    second_path = ANALYSIS_DIR / "second_floor_neighborhoods.csv"
+    if not dyn_path.exists() or not second_path.exists():
         raise SystemExit("run `classify` first")
     with dyn_path.open() as fh:
         dynamic = list(csv.DictReader(fh))
+    # Every slug in the priority CSV already has an image; second-tier ones
+    # keep it, so only their slugs are needed (to exclude from stage 3).
+    with second_path.open() as fh:
+        already_generated = {r["display_slug"] for r in csv.DictReader(fh)}
 
     rows_out: list[dict[str, str]] = []
     seen: set[str] = set()
@@ -447,26 +560,28 @@ def manifest_cmd(secondary_csv: Path | None) -> None:
             "stage": str(stage), "source": source,
         })
 
-    # Stage 1: USA + Canada. Stage 2: rest of the priority CSV.
+    # Stage 1: USA + Canada revisions. Stage 2: rest of the priority CSV
+    # revisions. Only mid/high tiers: second-floor images already exist.
     for r in dynamic:
         stage = 1 if r["country_code"] in ("US", "CA") else 2
         dest = destination_name(r["display_slug"], r["neighborhood"],
                                 r["city"], r["country"])
         add(r["display_slug"], dest, r["floor_tier"], stage, "priority_csv")
 
-    # Stage 3: neighborhoods (only) from the 46k sheet, classified with the
-    # same rules; only mid/high tiers enter the manifest.
+    already_generated |= seen
+
+    # Stage 3: neighborhoods (only) from the 46k sheet that are NOT in the
+    # priority CSV. These were never generated, so ALL tiers are included
+    # (second-tier ones get a fresh second-floor dynamic prompt).
     if secondary_csv is not None:
         with secondary_csv.open() as fh:
             for r in csv.DictReader(fh):
                 if r["location_type"] != "neighborhood":
                     continue
                 slug = r["display_slug"].strip().strip("/")
-                if not slug or slug in seen:
+                if not slug or slug in already_generated:
                     continue
                 tier, _ = classify_floor(slug)
-                if tier == "second":
-                    continue
                 dest = r["name"].strip()
                 if "," not in dest:
                     dest = f"{dest}, {_pretty(slug.split('/')[0])}"
