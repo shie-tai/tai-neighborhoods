@@ -18,13 +18,17 @@ import boto3
 from botocore.exceptions import ClientError
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-IMAGES_DIR = REPO_ROOT / "images" / "neighborhoods_dynamic"
+IMAGES_DIRS = [
+    REPO_ROOT / "images" / "neighborhoods_dynamic",
+    REPO_ROOT / "images" / "neighborhood_backfill",
+]
 BUCKET = "image.travelai.storage"
 
 
 def main() -> None:
     s3 = boto3.client("s3")
-    local = sorted(IMAGES_DIR.rglob("*.png"))
+    local = sorted(p for d in IMAGES_DIRS if d.exists()
+                   for p in d.rglob("*.png"))
     uploaded = skipped = 0
     for path in local:
         key = path.relative_to(REPO_ROOT).as_posix()

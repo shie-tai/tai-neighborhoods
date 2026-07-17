@@ -61,6 +61,18 @@ MANIFEST_CSV = DATA_DIR / "neighborhoods_manifest.csv"
 PROMPT_CSV = DATA_DIR / "prompt" / "neighborhood_prompts.csv"
 ANALYSIS_DIR = REPO_ROOT / "analysis" / "dynamic_floor_neighborhoods"
 IMAGES_DIR = REPO_ROOT / "images" / "neighborhoods_dynamic"
+# Stage 3 (46k-sheet fresh generations) images land in a separate folder.
+BACKFILL_DIR = REPO_ROOT / "images" / "neighborhood_backfill"
+
+
+def done_slugs() -> set[str]:
+    """Slugs with a finalized PNG in either output folder."""
+    done: set[str] = set()
+    for base in (IMAGES_DIR, BACKFILL_DIR):
+        if base.exists():
+            done |= {p.relative_to(base).with_suffix("").as_posix()
+                     for p in base.rglob("*.png")}
+    return done
 
 US_STATE_NAMES: dict[str, str] = {
     "alabama": "Alabama", "alaska": "Alaska", "arizona": "Arizona",
@@ -639,10 +651,11 @@ def prompts_csv_cmd(stage: str | None) -> None:
 # Finalize / status
 # ---------------------------------------------------------------------------
 
-def finalize_cmd(slug: str, generated: Path) -> None:
+def finalize_cmd(slug: str, generated: Path,
+                 out_dir: Path | None = None) -> None:
     from PIL import Image
 
-    out_path = IMAGES_DIR / f"{slug}.png"
+    out_path = (out_dir or IMAGES_DIR) / f"{slug}.png"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with Image.open(generated) as im:
         im = im.convert("RGB")
@@ -666,8 +679,7 @@ def finalize_cmd(slug: str, generated: Path) -> None:
 
 def status_cmd() -> None:
     manifest = load_manifest()
-    done = {p.relative_to(IMAGES_DIR).with_suffix("").as_posix()
-            for p in IMAGES_DIR.rglob("*.png")} if IMAGES_DIR.exists() else set()
+    done = done_slugs()
     by_stage: dict[str, list[str]] = {}
     for slug, row in manifest.items():
         by_stage.setdefault(row["stage"], []).append(slug)

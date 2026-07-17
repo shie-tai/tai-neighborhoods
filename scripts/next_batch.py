@@ -10,7 +10,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from neighborhood_hero_pipeline import (  # noqa: E402
-    IMAGES_DIR, build_prompt, load_manifest,
+    build_prompt, done_slugs, load_manifest,
 )
 
 
@@ -20,8 +20,7 @@ def main() -> None:
     ap.add_argument("-n", type=int, default=8)
     args = ap.parse_args()
 
-    done = {p.relative_to(IMAGES_DIR).with_suffix("").as_posix()
-            for p in IMAGES_DIR.rglob("*.png")} if IMAGES_DIR.exists() else set()
+    done = done_slugs()
     manifest = load_manifest()
     printed = 0
     for slug, row in manifest.items():
