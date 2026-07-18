@@ -65,9 +65,17 @@ IMAGES_DIR = REPO_ROOT / "images" / "neighborhoods_dynamic"
 BACKFILL_DIR = REPO_ROOT / "images" / "neighborhood_backfill"
 
 
+# Completed slugs are tracked in a text file (one slug per line) because
+# finalized PNGs are uploaded to S3 and removed from the repo to keep it light.
+DONE_SLUGS_FILE = DATA_DIR / "done_slugs.txt"
+
+
 def done_slugs() -> set[str]:
-    """Slugs with a finalized PNG in either output folder."""
+    """Slugs already finalized: recorded in the done file or still on disk."""
     done: set[str] = set()
+    if DONE_SLUGS_FILE.exists():
+        done |= {line.strip() for line in
+                 DONE_SLUGS_FILE.read_text().splitlines() if line.strip()}
     for base in (IMAGES_DIR, BACKFILL_DIR):
         if base.exists():
             done |= {p.relative_to(base).with_suffix("").as_posix()
