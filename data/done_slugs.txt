@@ -155,6 +155,7 @@ australia/victoria/melbourne/brunswick-east
 australia/victoria/melbourne/clayton-south
 australia/victoria/melbourne/dandenong
 australia/victoria/melbourne/epping
+australia/victoria/melbourne/heidelberg-heights
 australia/victoria/melbourne/laverton-north
 australia/victoria/melbourne/lynbrook
 australia/victoria/melbourne/mickleham
@@ -365,6 +366,7 @@ canada/quebec/quebec/centre-ville
 canada/quebec/quebec/saint-jean-street
 canada/saskatchewan/saskatoon/north-industrial
 canada/saskatchewan/saskatoon/saskatoon-downtown
+chile/santiago-metropolitan/santiago/barrio-italia
 chile/santiago-metropolitan/santiago/bellas-artes
 chile/santiago-metropolitan/santiago/downtown-santiago
 chile/santiago-metropolitan/santiago/pudahuel
@@ -645,6 +647,7 @@ czech-republic/prague-region/prague/veleslavin
 czech-republic/prague-region/prague/zbraslav
 dominican-republic/distrito-nacional/santo-domingo/ciudad-universitaria
 dominican-republic/distrito-nacional/santo-domingo/gascue
+dominican-republic/distrito-nacional/santo-domingo/miraflores
 ecuador/guayas/guayaquil/garzota
 ecuador/guayas/guayaquil/kennedy
 egypt/cairo-governorate/cairo/nasr-city
@@ -714,6 +717,7 @@ france/meurthe-et-moselle-department/nancy/nancy-city-centre
 france/nimes/nimes-city-centre
 france/nord-department/lille/lille-centre-ville
 france/nord-department/lille/vauban-wazemmes
+france/oise-department/gouvieux/montvillargenne
 france/paris/bel-air
 france/paris/butte-aux-cailles
 france/paris/clignancourt
@@ -772,6 +776,7 @@ germany/baden-wuerttemberg/remseck-am-neckar/neckarrems
 germany/baden-wuerttemberg/reutlingen/rommelsbach
 germany/baden-wuerttemberg/rheinfelden-baden/eichsel
 germany/baden-wuerttemberg/sinsheim/eschelbach
+germany/baden-wuerttemberg/sinsheim/hoffenheim
 germany/baden-wuerttemberg/sonnenbuehl/genkingen
 germany/baden-wuerttemberg/ulm/grimmelfingen
 germany/baden-wuerttemberg/ulm/soflingen
@@ -884,6 +889,7 @@ germany/north-rhine-westphalia/bergisch-gladbach/refrath
 germany/north-rhine-westphalia/bielefeld/schildesche-bauerschaft
 germany/north-rhine-westphalia/bochum/langendreer
 germany/north-rhine-westphalia/bochum/wattenscheid
+germany/north-rhine-westphalia/cologne/chorweiler
 germany/north-rhine-westphalia/cologne/ensen
 germany/north-rhine-westphalia/cologne/longerich
 germany/north-rhine-westphalia/cologne/neubruck
@@ -1146,6 +1152,8 @@ indonesia/bali/ubud/penestanan
 indonesia/bali/ubud/pengosekan
 indonesia/bali/ubud/sayan
 indonesia/bali/ubud/ubud-city-centre
+indonesia/east-java/prigen/tretes
+indonesia/east-nusa-tenggara/ruteng/hombel
 indonesia/south-kalimantan/banjarmasin/melayu
 indonesia/special-capital-region-of-jakarta/jakarta/kemang
 indonesia/special-capital-region-of-jakarta/jakarta/kuningan
@@ -1157,6 +1165,7 @@ indonesia/west-java/bandung/bandung-kulon
 indonesia/west-java/bandung/hegarmanah
 indonesia/west-java/bandung/pasirkaliki
 indonesia/west-java/bandung/sukajadi
+indonesia/west-java/garut/tarogong
 ireland/cork-county/cork/victorian-quarter
 ireland/dublin/glasnevin
 israel/tel-aviv-district/tel-aviv/florentin
@@ -1381,6 +1390,7 @@ malta/st-paul-s-bay/qawra
 malta/tal-ghoqod
 mexico/baja-california/tijuana/centro
 mexico/baja-california/tijuana/playas-de-tijuana/553248633981701582
+mexico/guanajuato/guanajuato/zona-centro
 mexico/guanajuato/leon/leon-centro
 mexico/guerrero/acapulco/boulevard-barra-vieja
 mexico/guerrero/acapulco/caleta
@@ -1435,6 +1445,7 @@ mozambique/maputo/central-c
 mozambique/maputo/polana-cimento-b
 myanmar/yangon/kandawgyi-lake-area
 myanmar/yangon/yankin-township
+netherlands/gelderland/nijmegen/nijmegen-centrum
 netherlands/limburg/maastricht/boschstraatkwartier
 netherlands/limburg/maastricht/randwijck
 netherlands/north-holland/amsterdam/amsterdam-east
@@ -2332,6 +2343,7 @@ usa/hawaii/honolulu/eastern-honolulu
 usa/hawaii/honolulu/waikiki
 usa/hawaii/lahaina/historic-lahaina-front-street
 usa/hawaii/lahaina/napili
+usa/hawaii/lahaina/napili-honokowai
 usa/idaho/boise/downtown-boise
 usa/idaho/boise/east-end
 usa/idaho/boise/southeast-boise
@@ -2346,6 +2358,7 @@ usa/illinois/chicago/the-loop
 usa/illinois/chicago/west-loop
 usa/indiana/indianapolis/downtown-indianapolis
 usa/iowa/des-moines/historic-east-village
+usa/kansas/la-cygne/linn-valley
 usa/kansas/wichita/downtown-wichita
 usa/kentucky/louisville/downtown-louisville
 usa/louisiana/new-orleans/central-business-district
@@ -2364,6 +2377,7 @@ usa/massachusetts/cambridge/inman-square
 usa/michigan/detroit/downtown-detroit
 usa/michigan/detroit/midtown
 usa/michigan/detroit/new-center-detroit
+usa/michigan/muskegon/north-muskegon
 usa/minnesota/minneapolis/dinkytown
 usa/minnesota/minneapolis/downtown-east
 usa/minnesota/minneapolis/downtown-minneapolis
@@ -2512,6 +2526,8 @@ usa/virginia/arlington/shirlington
 usa/virginia/richmond/fan-district
 usa/virginia/vienna/tysons
 usa/virginia/virginia-beach/sandbridge
+usa/washington/bremerton/erlands-point-kitsap-lake
+usa/washington/bremerton/tracyton
 usa/washington/seattle/ballard
 usa/washington/seattle/belltown
 usa/washington/seattle/capitol-hill
