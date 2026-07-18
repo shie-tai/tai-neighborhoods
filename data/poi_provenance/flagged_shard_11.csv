@@ -1,1 +1,3 @@
 neighborhoods/ao-bocoio/city-centre,"small rural municipality seat; Places has no usable POIs (wrong-city matches, watermarked/people photos); cannot name 4 real walkable POIs with confidence"
+"neighborhoods/ao-bocoio/city-centre","only 2 of 4 POIs generated (hospital anchor + savanna outdoors); Places data for Bocoio town is sparse: church/market matches resolve to Tombua, Benguela city or Lobito; remaining local photos show people/TikTok watermarks; text-only for market/church hallucinated grand colonial architecture and was discarded"
+neighborhoods/cn-datun/city-centre,"No usable Places coverage; only matches (Peixian Han City 9.1km, Weishan Lake) unwalkable; cannot confidently name 4 real walkable POIs in Datun mining town"
