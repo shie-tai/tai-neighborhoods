@@ -144,10 +144,23 @@ def existing_counts(prefixes: list[str]) -> dict[str, int]:
     return counts
 
 
+def flagged_ids() -> set[str]:
+    """parent_ids flagged as ungeneratable in any flagged_shard_*.csv."""
+    ids: set[str] = set()
+    for path in PROVENANCE_DIR.glob("flagged_shard_*.csv"):
+        with open(path, newline="", encoding="utf-8") as f:
+            for row in csv.reader(f):
+                if row and row[0].startswith("neighborhoods/"):
+                    ids.add(row[0])
+    return ids
+
+
 def cmd_shard(args: argparse.Namespace) -> None:
     rows = [r for r in load_manifest() if int(r["shard"]) == args.shard]
     counts = existing_counts([r["s3_prefix"] for r in rows])
-    pending = [r for r in rows if counts[r["s3_prefix"]] < 4]
+    skip = flagged_ids()
+    pending = [r for r in rows
+               if counts[r["s3_prefix"]] < 4 and r["parent_id"] not in skip]
     done = len(rows) - len(pending)
     if args.limit:
         pending = pending[: args.limit]
