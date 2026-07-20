@@ -1,1 +1,3 @@
 neighborhoods/ao-balombo/city-centre,"Places coverage insufficient: queries return wrong-city or junk photos; only verifiable POI (Administracao Municipal) fails QA (readable signage reproduced from reference, text-only invents wrong building); cannot name 4 real walkable POIs with confidence"
+neighborhoods/cn-yushu-05/city-centre,"Only 1 verifiable walkable POI (Yushu Park, generated text-only as anchor); Places photos for Yushu Jilin are selfies/junk and no other real POIs (square, museum, pedestrian street) verifiable with confidence"
+neighborhoods/so-ruqi/city-centre,"Places returns no walkable POIs near Ruqi (9.97,43.43); mosque/market queries match Mogadishu/Borama/Hargeisa; only locality-level hit; cannot name 4 real walkable POIs with confidence"
