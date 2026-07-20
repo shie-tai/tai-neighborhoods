@@ -6,3 +6,11 @@ neighborhoods/et-arabi/city-centre,manifest lat/lng (9.96/42.49) has zero Places
 neighborhoods/kp-tokch-on/city-centre,only Deokcheon Station verifiable via Places at assigned coords; park/market/culture queries return distant South Korea or Pyongyang results—cannot verify 3 more walkable POIs
 neighborhoods/mx-mexicali/centro,manifest lat/lng (19.43/-99.13) is Mexico City; all 4 POIs verified at actual Mexicali centro (~32.66/-115.47)—prompt rows added with correct Mexicali Places matches
 neighborhoods/mx-xico/town-center,manifest lat/lng (19.45/-96.96) resolves to Coatepec Veracruz not Xico Ver; all 4 POIs verified at assigned Coatepec coords (Parroquia San Jeronimo/Mercado Coatepec)
+neighborhoods/sn-tiebo/city-centre,zero Places matches at assigned coords (14.63/-16.23); nearest verifiable POI is Great Mosque of Diourbel 2.5km in adjacent city—not walkable from Tiébo center; cannot verify 4 walkable POIs
+neighborhoods/ao-chitato/city-centre,zero Places matches at assigned coords; cannot verify walkable POIs
+neighborhoods/cl-villa-mercedes/city-centre,only 3/4 POIs verifiable via Places at assigned coords
+neighborhoods/cn-ala-er/city-centre,only 3/4 POIs verifiable via Places at assigned coords
+neighborhoods/cn-chifeng/city-center,only 3/4 POIs verifiable via Places at assigned coords
+neighborhoods/cn-mengmao/city-centre,only 3/4 POIs verifiable via Places at assigned coords
+neighborhoods/cn-songcheng/city-centre,only 1/4 POIs verifiable via Places at assigned coords
+neighborhoods/cn-wayaobu/city-centre,only 2/4 POIs verifiable via Places at assigned coords

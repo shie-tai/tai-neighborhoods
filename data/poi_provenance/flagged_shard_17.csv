@@ -1,1 +1,2 @@
 neighborhoods/kp-ullyul/city-centre,Google Places returns only Unryul-up locality/county boundary at assigned coords; no verifiable walkable anchor/outdoors/shopping/culture POIs beyond administrative polygons
+neighborhoods/ua-verhunskyi/city-centre,Spurious geonames city point at 48.58573/39.37158; Google Places returns zero verifiable walkable POIs in Luhansk oblast at assigned coords
