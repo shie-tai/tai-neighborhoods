@@ -7,3 +7,4 @@ neighborhoods/in-muzaffarnagar/town-center,"Pinned coords (29.37,78.13) ~60km fr
 neighborhoods/in-ratlam/city-center,"Pinned coords (28.66,77.24) are Red Fort Delhi, not Ratlam MP (~800km); cannot verify 4 walkable POIs for Ratlam at wrong geocode"
 neighborhoods/jp-kawaguchi/station-area,"Pinned coords (35.498,138.769) are Kawaguchiko Station Yamanashi (~300km from Kawaguchi Saitama); Places matches resolve to wrong city; cannot verify 4 walkable POIs at wrong geocode"
 neighborhoods/kp-sinch-on-up/city-centre,"Only 3 verifiable POIs (Sinchon Station; Sinchon Central Market; Sinchon Revolutionary Museum); Places has no walkable outdoors/green POI in Sinchon-up NK; added 3 prompts"
+neighborhoods/ng-chakwama/city-centre,"Only 3 verifiable POIs in Places (Jumuat Mosque, Chakwama Primary School, Chakwama BHC); no walkable market or green space found for 4th category"

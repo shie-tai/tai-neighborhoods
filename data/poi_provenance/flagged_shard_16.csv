@@ -4,3 +4,5 @@ neighborhoods/cn-xinyuan/city-centre,only People's Square + Yili Xinyuan Public 
 neighborhoods/cn-zhumadian/city-centre,only Zhidi Park + Forest Park + Conference and Exhibition Center verifiable via Places; no walkable shopping-dining POI found (mall/pedestrian-street/market queries return nothing or Zhengzhou results); uploaded 3 of 4
 neighborhoods/et-arabi/city-centre,manifest lat/lng (9.96/42.49) has zero Places matches; nearest Arabi locality is ~25km east (9.93/42.72) with only mosque/market entries—cannot verify 4 walkable POIs at assigned coordinates
 neighborhoods/kp-tokch-on/city-centre,only Deokcheon Station verifiable via Places at assigned coords; park/market/culture queries return distant South Korea or Pyongyang results—cannot verify 3 more walkable POIs
+neighborhoods/mx-mexicali/centro,manifest lat/lng (19.43/-99.13) is Mexico City; all 4 POIs verified at actual Mexicali centro (~32.66/-115.47)—prompt rows added with correct Mexicali Places matches
+neighborhoods/mx-xico/town-center,manifest lat/lng (19.45/-96.96) resolves to Coatepec Veracruz not Xico Ver; all 4 POIs verified at assigned Coatepec coords (Parroquia San Jeronimo/Mercado Coatepec)
