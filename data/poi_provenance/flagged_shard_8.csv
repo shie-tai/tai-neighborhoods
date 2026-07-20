@@ -1,2 +1,4 @@
 neighborhoods/ao-baia-farta/city-centre,"only 2 verifiable walkable POIs (fishing port, municipal administration); nearest beaches Baia Azul/Caotinha are 8-10 km away, no market/plaza/church Places listings found"
 neighborhoods/cn-baishan/city-centre,"no verifiable shopping-dining POI: Google Places coverage of Baishan (Hunjiang district) is nearly empty, queries matched wrong cities (Jilin City, Hunchun, Linjiang); 3 POIs generated text-only"
+neighborhoods/ke-khwisero/city-centre,"only 3 verifiable walkable POIs (market, shopping center, parish church); Google Places has no park/outdoor space listing in Khwisero town center"
+neighborhoods/kp-paek-ak/city-centre,"Google Places returns ZERO_RESULTS for all queries; North Korea location cannot be verified with place_id"

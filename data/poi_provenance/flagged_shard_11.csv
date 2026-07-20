@@ -5,3 +5,5 @@ neighborhoods/cn-shuizhai/city-centre,only 3 verifiable POIs (Qinjiang River Wat
 "neighborhoods/cn-xinqiao/city-centre","No usable Places results for Xinqiao town (Songjiang); cannot verify 4 real walkable POIs with confidence"
 neighborhoods/in-muzaffarnagar/town-center,"Pinned coords (29.37,78.13) ~60km from Muzaffarnagar city center; Places returns no walkable POIs near pin; clock tower/market matches only at 29.47,77.70"
 neighborhoods/in-ratlam/city-center,"Pinned coords (28.66,77.24) are Red Fort Delhi, not Ratlam MP (~800km); cannot verify 4 walkable POIs for Ratlam at wrong geocode"
+neighborhoods/jp-kawaguchi/station-area,"Pinned coords (35.498,138.769) are Kawaguchiko Station Yamanashi (~300km from Kawaguchi Saitama); Places matches resolve to wrong city; cannot verify 4 walkable POIs at wrong geocode"
+neighborhoods/kp-sinch-on-up/city-centre,"Only 3 verifiable POIs (Sinchon Station; Sinchon Central Market; Sinchon Revolutionary Museum); Places has no walkable outdoors/green POI in Sinchon-up NK; added 3 prompts"
