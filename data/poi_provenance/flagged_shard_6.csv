@@ -1,0 +1,3 @@
+parent_id,reason
+neighborhoods/iq-sinah/city-centre,Google Places returns no verifiable POIs within 3km of city centre; nearest matches are in adjacent Duhok (~5km) or wrong cities
+neighborhoods/kp-p-yongsong/city-centre,Google Places has no walkable POI matches within 3km; only locality-level result for P'yŏngsŏng

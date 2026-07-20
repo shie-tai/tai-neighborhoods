@@ -3,3 +3,5 @@ neighborhoods/ao-bocoio/city-centre,"small rural municipality seat; Places has n
 neighborhoods/cn-datun/city-centre,"No usable Places coverage; only matches (Peixian Han City 9.1km, Weishan Lake) unwalkable; cannot confidently name 4 real walkable POIs in Datun mining town"
 neighborhoods/cn-shuizhai/city-centre,only 3 verifiable POIs (Qinjiang River Waterfront; Shuizhai Bridge; Wuhua Olympic Sports Center) - Places API returns no results for Shuizhai/Wuhua and no confident 4th walkable POI
 "neighborhoods/cn-xinqiao/city-centre","No usable Places results for Xinqiao town (Songjiang); cannot verify 4 real walkable POIs with confidence"
+neighborhoods/in-muzaffarnagar/town-center,"Pinned coords (29.37,78.13) ~60km from Muzaffarnagar city center; Places returns no walkable POIs near pin; clock tower/market matches only at 29.47,77.70"
+neighborhoods/in-ratlam/city-center,"Pinned coords (28.66,77.24) are Red Fort Delhi, not Ratlam MP (~800km); cannot verify 4 walkable POIs for Ratlam at wrong geocode"

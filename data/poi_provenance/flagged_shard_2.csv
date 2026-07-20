@@ -1,0 +1,2 @@
+parent_id,reason
+neighborhoods/kp-kanggye/city-centre,Google Places returns only the Kanggye locality polygon; no verifiable walkable POIs (mosque park market museum) with place_id in or near city centre
